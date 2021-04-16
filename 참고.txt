@@ -1,0 +1,2 @@
+몽고DB 설치 : https://m.blog.naver.com/wideeyed/221815886721
+장고 몽고DB 연동 : https://blog.boxcorea.com/wp/archives/2941 , https://www.djongomapper.com/get-started/
