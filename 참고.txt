@@ -1,2 +1,6 @@
 몽고DB 설치 : https://m.blog.naver.com/wideeyed/221815886721
 장고 몽고DB 연동 : https://blog.boxcorea.com/wp/archives/2941 , https://www.djongomapper.com/get-started/
+
+몽고DB 설치2 : https://seogwipo.tistory.com/entry/%EC%9C%88%EB%8F%84%EC%9A%B010%EC%97%90%EC%84%9C-%EB%AA%BD%EA%B3%A0MongoDB-40-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0?category=871957
+
+장고 GridFS 연동 : https://pypi.org/project/django-gridfs-storage/
