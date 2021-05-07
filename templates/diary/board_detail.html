@@ -1,0 +1,43 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+<div class="container my-3">
+    <h5 class="border-bottom py-2">{{ board.subject }}</h5>
+    <h5>{{ board.answer_set.count }}개의 답변이 있습니다.<h5>
+        <div>
+            <ul>
+            {% for answer in board.answer_set.all %}
+                <li>{{ answer.content }}</li>
+            {% endfor%}
+            </ul>
+        </div>
+    <div class="card my-3">
+        <div class="cart-body">
+            <div class="card-text">
+                {{ board.content }}
+            </div>
+            <div class="d-flex justify-content-end">
+                {{ board.board_date }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} <h5>{{ board.answer_set.count }}개의 답변이 있습니다.<h5>
+<div>
+    <ul>
+    {% for answer in board.answer_set.all %}
+        <li>{{ answer.content }}</li>
+    {% endfor%}
+    </ul>
+</div> {% endcomment %}
+
+<form action="{% url 'diary:answer_board' board.id %}" method="post">
+{% comment %} s=csrf_token은 form에서 필수고, 값 넘겨줄때 변조를 막기위한 검증 기능 {% endcomment %}
+{% csrf_token %}
+<textarea name="content" id="content" rows="15"></textarea>
+<input type="submit" value="답변등록">
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}">

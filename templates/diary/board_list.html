@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+<div class="container my-3">
+    <table class="table">
+        <thead>
+            <tr class="thead-dark">
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if board_list %}
+                {% for board in board_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'diary:detail' board.id %}">{{ board.subject }}</a></td>
+                        <td>{{ board.board_date }}</td>
+                    </tr>
+                {% endfor %}    
+            {% else %}
+                <tr>
+                    <td colspan="3">게시글이 없어요!</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}">

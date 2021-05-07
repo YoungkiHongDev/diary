@@ -27,5 +27,5 @@ def answer_board(request, board_id):
     diary 답변 등록
     """
     board = get_object_or_404(Write, pk=board_id)
-    board.answer_set.board(content=request.POST.get('board_content'), board_date=timezone.now())
+    board.answer_set.board(content=request.POST.get('content'), board_date=timezone.now())
     return redirect('diary:detail', board_id=board.id)
