@@ -1,1 +1,3 @@
 venv/
+diary/__pycache__
+config/__pycache__
