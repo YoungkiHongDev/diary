@@ -2,42 +2,38 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
 <div class="container my-3">
-    <h5 class="border-bottom py-2">{{ board.subject }}</h5>
-    <h5>{{ board.answer_set.count }}개의 답변이 있습니다.<h5>
-        <div>
-            <ul>
-            {% for answer in board.answer_set.all %}
-                <li>{{ answer.content }}</li>
-            {% endfor%}
-            </ul>
-        </div>
+    <h2 class="border-bottom py-2">{{ board.board_subject }}</h2>
     <div class="card my-3">
-        <div class="cart-body">
-            <div class="card-text">
-                {{ board.content }}
-            </div>
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}</div>
             <div class="d-flex justify-content-end">
-                {{ board.board_date }}
+                <div class="badge badge-light p-2">
+                    {{ board.board_date }}
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-{% comment %} <h5>{{ board.answer_set.count }}개의 답변이 있습니다.<h5>
-<div>
-    <ul>
+    <h5 class="border-bottom my-3 py-2">{{board.answer_set.count}}개의 댓글이 있습니다.</h5>
     {% for answer in board.answer_set.all %}
-        <li>{{ answer.content }}</li>
-    {% endfor%}
-    </ul>
-</div> {% endcomment %}
-
-<form action="{% url 'diary:answer_board' board.id %}" method="post">
-{% comment %} s=csrf_token은 form에서 필수고, 값 넘겨줄때 변조를 막기위한 검증 기능 {% endcomment %}
-{% csrf_token %}
-<textarea name="content" id="content" rows="15"></textarea>
-<input type="submit" value="답변등록">
-</form>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;">{{ answer.answer_content }}</div>
+            <div class="d-flex justify-content-end">
+                <div class="badge badge-light p-2">
+                    {{ answer.answer_date }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <form action="{% url 'diary:answer_board' board.id %}" method="post" class="my-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+        </div>
+        <input type="submit" value="댓글등록" class="btn btn-primary">
+    </form>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
 <script src="{% static 'js/bootstrap.min.js' %}">

@@ -15,7 +15,7 @@
                 {% for board in board_list %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'diary:detail' board.id %}">{{ board.subject }}</a></td>
+                        <td><a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a></td>
                         <td>{{ board.board_date }}</td>
                     </tr>
                 {% endfor %}    
