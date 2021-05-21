@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('diary/', include('diary.urls')),
     path('common/', include('common.urls')),
+    path('rekog/', views.rekog, name='rekog'),
 ]
