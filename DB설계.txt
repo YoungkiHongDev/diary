@@ -1,0 +1,11 @@
+게시글 제목 (board_subject)
+게시글 내용 (board_content)
+게시글 날짜 (board_date)
+게시글 사진 (board_img)
+게시글 글쓴이 (mem_name)
+게시글 감정 (board_emo)
+게시글 사진태그 (board_tag)
+
+회원 id (mem_id)
+회원 pw (mem_pw)
+회원 이름 (mem_name)
