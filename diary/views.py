@@ -34,7 +34,19 @@ def answer_board(request, board_id):
 
 def post_write(request):
     """
-    pybo 질문등록
+    diary 질문등록
     """
-    form = WriteForm()
+    if request.method == 'POST':
+        form = WriteForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.board_date = timezone.now()
+            post.mem_name = "asd"
+            post.board_emo = "happy"
+            post.board_tag = "good"
+            post.save()
+            return redirect('diary:index')
+    else:
+        form = WriteForm()
+    context = {'form': form}
     return render(request, 'diary/board_write.html', {'form': form})

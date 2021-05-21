@@ -3,10 +3,10 @@ from djongo import models   # MongoDB
 class Write(models.Model):
     board_subject = models.CharField(max_length=200)  # 제목
     board_content = models.TextField()    # 내용
-    board_date = models.DateTimeField()    # 생성날짜
+    board_date = models.DateTimeField(auto_now_add=True)    # 생성날짜
     mem_name = models.CharField(max_length=20)  # 글쓴이
-    board_emo = models.JSONField(max_length=20) # 감정
-    board_tag = models.JSONField(max_length=20) # 태그
+    board_emo = models.TextField(max_length=20) # 감정
+    board_tag = models.TextField(max_length=20) # 태그
 
     class Meta:
         abstract = False
