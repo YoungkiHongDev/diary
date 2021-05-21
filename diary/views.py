@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 # from django.http import HttpResponse  # 헬로 월드 없애서 이제 필요 없음!
 from .models import Write
 from django.utils import timezone
+from .forms import WriteForm
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -29,3 +30,11 @@ def answer_board(request, board_id):
     board = get_object_or_404(Write, pk=board_id)
     board.answer_set.board(content=request.POST.get('content'), board_date=timezone.now())
     return redirect('diary:detail', board_id=board.id)
+
+
+def post_write(request):
+    """
+    pybo 질문등록
+    """
+    form = WriteForm()
+    return render(request, 'diary/board_write.html', {'form': form})
