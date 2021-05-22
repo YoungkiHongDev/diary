@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'diary.apps.DiaryConfig',
     'common.apps.CommonConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 # 로그아웃 성공시 메인으로 리다이렉트
 LOGOUT_REDIRECT_URL = '/'
+
+# AWS 세팅
+AWS_ACCESS_KEY_ID = 'MY_ACCESS_KEY_ID'
+AWS_SECRET_ACCESS_KEY = 'MY_SECRET_KEY'
+AWS_REGION = 'MY_REGION'
+
+# S3 저장소 세팅
+AWS_STORAGE_BUCKET_NAME = 'MY_BUCKET_NAME'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"), ]

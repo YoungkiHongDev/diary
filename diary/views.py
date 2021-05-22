@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Write
 from django.utils import timezone
 from .forms import WriteForm
+from django.conf import settings
 import boto3 #AWS 모듈
 
 # def index(request):
@@ -57,9 +58,10 @@ def post_write(request):
 def rekog(request):
 
     photo='photo.jpg'
-    bucket='diarybuckettest'
+    bucket=settings.AWS_STORAGE_BUCKET_NAME
+    region=settings.AWS_REGION
 
-    client=boto3.client('rekognition', 'ap-northeast-2')
+    client=boto3.client('rekognition', region)
     response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':photo}},Attributes=['ALL'])
 
     for faceDetail in response['FaceDetails']:

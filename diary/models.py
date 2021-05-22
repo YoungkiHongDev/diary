@@ -1,3 +1,4 @@
+from botocore import model
 from djongo import models   # MongoDB
 
 class Write(models.Model):
@@ -16,3 +17,7 @@ class Answer(models.Model):
     board = models.ForeignKey(Write, on_delete=models.CASCADE)    # Write에서 가져온 외래키, 질문이 지워지면 답변도 지워지게! (on_delete=models.CASCADE)
     answer_content = models.TextField()    # 내용
     answer_date = models.DateTimeField()    # 생성날짜
+
+# 파일 업로드 모델
+class Upload(models.Model):
+    photo = models.ImageField(upload_to="")
