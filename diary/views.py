@@ -3,9 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Write
 from django.utils import timezone
 from .forms import WriteForm
-from django.conf import settings
 from django.core.paginator import Paginator
-import boto3 #AWS 모듈
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -56,19 +54,3 @@ def post_write(request):
         form = WriteForm()
     context = {'form': form}
     return render(request, 'diary/board_write.html', {'form': form})
-
-
-# rekognition 테스트용
-def rekog(request):
-
-    photo='photo.jpg'
-    bucket=settings.AWS_STORAGE_BUCKET_NAME
-    region=settings.AWS_REGIONasd
-
-    client=boto3.client('rekognition', region)
-    response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':photo}},Attributes=['ALL'])
-
-    for faceDetail in response['FaceDetails']:
-        emotions = str(faceDetail['Emotions'])
-    
-    return render(request, 'rekognition.html', {'rekog': emotions})
