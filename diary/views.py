@@ -3,8 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Write
 from django.utils import timezone
 from .forms import WriteForm
-from django.conf import settings
-import boto3 #AWS 모듈
+from django.core.paginator import Paginator
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -13,7 +12,10 @@ def index(request):
     """
     diary 목록 출력
     """
+    page = request.GET.get('page', '1')  # 페이지
     board_list = Write.objects.order_by('-board_date') # 최신 순으로 질문 출력
+    paginator = Paginator(board_list, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
     context = {'board_list': board_list}  # 위에 선언한 board_list를 board_list에다가 집어 넣음(context라는 배열에!) JSON 형식임
     return render(request, 'diary/board_list.html', context)  # 저장한 context 배열을 템플릿 안에 출력~ context는 파라미터!
 
@@ -52,19 +54,3 @@ def post_write(request):
         form = WriteForm()
     context = {'form': form}
     return render(request, 'diary/board_write.html', {'form': form})
-
-
-# rekognition 테스트용
-def rekog(request):
-
-    photo='photo.jpg'
-    bucket=settings.AWS_STORAGE_BUCKET_NAME
-    region=settings.AWS_REGION
-
-    client=boto3.client('rekognition', region)
-    response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':photo}},Attributes=['ALL'])
-
-    for faceDetail in response['FaceDetails']:
-        emotions = str(faceDetail['Emotions'])
-    
-    return render(request, 'rekognition.html', {'rekog': emotions})
