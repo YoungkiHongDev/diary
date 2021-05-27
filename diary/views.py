@@ -13,7 +13,7 @@ def index(request):
     diary 목록 출력
     """
     # 입력 파라미터
-    page = request.GET.get('page', '1')  # 페이지
+    page = request.GET.get('page', '1')  # index 페이지 = 1페이지
     # 조회
     board_list = Write.objects.order_by('-board_date') # 최신 순으로 질문 출력
     # 페이징처리

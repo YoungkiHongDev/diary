@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% block content %}
 
+{% load diary_filter %}
+
+{% block content %}
 <div class="container my-3">
     <table class="table">
         <thead>
@@ -14,7 +16,8 @@
             {% if board_list %}
                 {% for board in board_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
+                        <td>{{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}</td>
                         <td><a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a></td>
                         <td>{{ board.board_date }}</td>
                     </tr>
@@ -65,5 +68,4 @@
     </ul>
     <a href="{% url 'diary:post_write' %}">게시글 쓰기</a>
 </div>
-
 {% endblock %}
