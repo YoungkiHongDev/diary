@@ -2,16 +2,77 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
 <div class="container">
     <h5 class="my-3 border-bottom pb-2">일기 작성</h5>
     <form method="post" class="post-form my-3">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 오류표시 End -->
+        <div class="form-group">
+            <label>제목</label>
+            <input type="text" class="form-control" name="board_subject" id="board_subject"
+                   value="{{ form.board_subject.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label>내용</label>
+            <textarea class="form-control" name="board_content"
+                      id="board_content" rows="10">{{ form.board_content.value|default_if_none:'' }}</textarea>
+        </div>
+        <input type="button" value="감정 분석" class="btnAjax">
+        <div class="form-group">
+            <label>감정 분석 결과</label>
+            <input type="text" class="form-control" name="board_emo" id="board_emo" readonly="readonly"
+                   value="{{ form.board_emo.value|default_if_none:'Happy' }}">
+        </div>
+        <div class="form-group">
+            <label>태그</label>
+            <input type="text" class="form-control" name="board_tag" id="board_tag"
+                   value="{{ form.board_tag.value|default_if_none:'#None' }}">
+        </div>
         <button type="submit" class="btn btn-primary">저장하기</button>
     </form>
 </div>
+
+<script>
+    let btnAjax = document.querySelector('.btnAjax');
+    btnAjax.addEventListener('click', e => {
+        let getContent = document.getElementById('board_content').value;
+        let param = {
+            'content': getContent,
+        }
+        $.ajax({
+            url : "{% url 'diary:analyze_emotion' %}",
+            type : 'POST',
+            headers: {
+                'X-CSRFTOKEN' : '{{ csrf_token }}'
+            },
+            data : JSON.stringify(param),
+            success:function(data){
+                consoloe.log('yes'); //이 부분에 문제가 있음 수정필요
+            },
+            error:function(){
+                alert('no');
+            }
+        });
+    })
+</script>
+
 {% endblock %}
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" 
+integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" 
+crossorigin="anonymous"></script>
 <script src="{% static 'js/bootstrap.min.js' %}">

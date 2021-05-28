@@ -4,6 +4,9 @@ from .models import Write
 from django.utils import timezone
 from .forms import WriteForm
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+import boto3
+import json
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -49,8 +52,6 @@ def post_write(request):
             post = form.save(commit=False)
             post.board_date = timezone.now()
             post.mem_name = "asd"
-            post.board_emo = "happy"
-            post.board_tag = "good"
             post.save()
             return redirect('diary:index')
     else:
@@ -58,3 +59,18 @@ def post_write(request):
     context = {'form': form}
     return render(request, 'diary/board_write.html', {'form': form})
 
+
+def analyze_emotion(request):
+    """
+    감정 분석
+    """
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        comprehend = boto3.client(service_name='comprehend', region_name='ap-northeast-2')
+
+        result = json.dumps(comprehend.detect_sentiment(Text=data.get('content'), LanguageCode="ko"), sort_keys=True)
+
+        context = {
+            'result': result,
+        }
+        return JsonResponse(context)

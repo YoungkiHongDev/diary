@@ -5,8 +5,5 @@ from diary.models import Write
 class WriteForm(forms.ModelForm):
     class Meta:
         model = Write
-        fields = ['board_subject', 'board_content']
-        labels = {
-            'subject': '제목',
-            'content': '일기 내용',
-        }
+        fields = ['board_subject', 'board_content', 'board_emo', 'board_tag']
+        
