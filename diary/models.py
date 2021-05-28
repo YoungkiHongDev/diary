@@ -1,7 +1,9 @@
 from botocore import model
 from djongo import models   # MongoDB
+from django.contrib.auth.models import User
 
 class Write(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # 글쓴이
     board_subject = models.CharField(max_length=200)  # 제목
     board_content = models.TextField()    # 내용
     board_date = models.DateTimeField(auto_now_add=True)    # 생성날짜

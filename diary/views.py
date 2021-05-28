@@ -33,16 +33,15 @@ def detail(request, board_id):   # board_id 객체를 가져옴
 
 def answer_board(request, board_id):
     """
-    diary 답변 등록
+    diary 댓글 등록
     """
     board = get_object_or_404(Write, pk=board_id)
-    board.answer_set.board(content=request.POST.get('content'), board_date=timezone.now())
+    board.answer_set.create(answer_content=request.POST.get('content'), answer_date=timezone.now())   
     return redirect('diary:detail', board_id=board.id)
-
 
 def post_write(request):
     """
-    diary 질문등록
+    diary 작성
     """
     if request.method == 'POST':
         form = WriteForm(request.POST)

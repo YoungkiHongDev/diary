@@ -18,7 +18,14 @@
                     <tr>
                         <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
                         <td>{{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}</td>
-                        <td><a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a></td>
+                        <td>
+                        <!-- 제목 -->
+                        <a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a>
+                        <!-- 댓글 갯수 -->
+                        {% if board.answer_set.count > 0 %}
+                        <span class="text-danger small ml-2">{{ board.answer_set.count }}</span>
+                        {% endif %}
+                        </td>
                         <td>{{ board.board_date }}</td>
                     </tr>
                 {% endfor %}    

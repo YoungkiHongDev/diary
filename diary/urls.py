@@ -5,8 +5,8 @@ from . import views
 app_name = 'diary'   # name space
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:board_id>/', views.detail, name='detail'),
-    path('answer/create/<int:board_id>/', views.answer_board, name='answer_board'),
-    path('post/write/', views.post_write, name='post_write'),
+    path('', views.index, name='index'),    # 메인
+    path('<int:board_id>/', views.detail, name='detail'),   # 글 자세히 보기
+    path('answer/create/<int:board_id>/', views.answer_board, name='answer_board'), # 댓글 작성
+    path('post/write/', views.post_write, name='post_write'),   # 글 쓰기
 ]
