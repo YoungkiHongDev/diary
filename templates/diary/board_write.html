@@ -7,6 +7,7 @@
     <h5 class="my-3 border-bottom pb-2">일기 작성</h5>
     <form method="post" class="post-form my-3">
         {% csrf_token %}
+        <!-- 각 항목이 비어있을 때 오류표시 -->
         {% if form.errors %}
             <div class="alert alert-danger" role="alert">
             {% for field in form %}
@@ -18,53 +19,75 @@
             </div>
         {% endif %}
         <!-- 오류표시 End -->
+
         <div class="form-group">
             <label>제목</label>
             <input type="text" class="form-control" name="board_subject" id="board_subject"
                    value="{{ form.board_subject.value|default_if_none:'' }}">
         </div>
+
+
         <div class="form-group">
-            <label>내용</label>
+            <label>일기</label>
             <textarea class="form-control" name="board_content"
                       id="board_content" rows="10">{{ form.board_content.value|default_if_none:'' }}</textarea>
         </div>
+
+        <!-- 내용에 채워진 일기로 감정 분석을 위해서 누르는 버튼 -->
         <input type="button" value="감정 분석" class="btnAjax">
+
+        <!-- 감정 분석 결과창, 읽기 전용, 사용자가 수정 불가능 -->
         <div class="form-group">
             <label>감정 분석 결과</label>
             <input type="text" class="form-control" name="board_emo" id="board_emo" readonly="readonly"
-                   value="{{ form.board_emo.value|default_if_none:'Happy' }}">
+                   value="{{ form.board_emo.value|default_if_none:'None' }}">
         </div>
+
+        <!-- 이건 뭘로 채움? -->
         <div class="form-group">
             <label>태그</label>
             <input type="text" class="form-control" name="board_tag" id="board_tag"
                    value="{{ form.board_tag.value|default_if_none:'#None' }}">
         </div>
+
+        <!-- 게시물 저장 버튼 -->
         <button type="submit" class="btn btn-primary">저장하기</button>
     </form>
 </div>
+
+
 <!-- 예시 : 원빈의 전무후무한 명연기, 명대사 그리고 지금은 유명해진 조연들 찾는 재미까지 -->
+
+<!-- 감정 분석 버튼을 위한 함수, AJAX 사용, 복잡 -->
 <script>
     let btnAjax = document.querySelector('.btnAjax');
     btnAjax.addEventListener('click', e => {
-        let getContent = document.getElementById('board_content').value;
+        let getContent = document.getElementById('board_content').value;  //일기 내용 추출
         let param = {
-            'content': getContent,
+            'content': getContent,   //json 형식으로 변환
         }
         $.ajax({
-            url : "{% url 'diary:analyze_emotion' %}",
+            url : "{% url 'diary:analyze_emotion' %}",    // urls.py 에 있는 path name
             type : 'POST',
             headers: {
-                'X-CSRFTOKEN' : '{{ csrf_token }}'
+                'X-CSRFTOKEN' : '{{ csrf_token }}'    // 오류 방지 및 보안을 위한 태그
             },
-            data : JSON.stringify(param),
+            data : JSON.stringify(param),    // 전송할 데이터
+
+            // 오류없이 진행됐을 경우
             success:function(data){
                 result_data = data;
                 result_data2 = JSON.parse(result_data["result"]);
                 result_data3 = JSON.stringify(result_data2["SentimentScore"]);
-                result_data4 = JSON.parse(result_data3)
+                result_data4 = JSON.parse(result_data3);
+                //복잡하지만 위의 과정을 거쳐야 추출할 수 있었다. 추후에 수정 예정
+
+                //각 감정값을 추출하는 코드
                 $('#board_emo').val(result_data4["Mixed"].toFixed(5) + " / " + result_data4["Negative"].toFixed(5)
                              + " / " + result_data4["Neutral"].toFixed(5) + " / " + result_data4["Positive"].toFixed(5));
             },
+
+            // 오류가 발생했을 경우
             error:function(){
                 alert('Error');
             }
