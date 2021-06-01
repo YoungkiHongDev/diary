@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+#----------------------[KEY 보안용]----------------------#
+import os, json
+from django.core.exceptions import ImproperlyConfigured
+#--------------------------------------------------------#
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m*1y+$vwcoz-149gl)j=d1068hdjv%+27i+cm1po-ouy41h-7='
+
+#----------------------------[KEY 보안용]----------------------------#
+secret_file = os.path.join(BASE_DIR, 'secrets.json')
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    try:
+        print("check: ", secrets[setting])
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+#--------------------------------------------------------------------#
+
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,3 +153,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 # 로그아웃 성공시 메인으로 리다이렉트
 LOGOUT_REDIRECT_URL = '/'
+
+#-------------------------------[AWS]-------------------------------#
+# S3 세팅
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # 기본 파일 저장 경로 S3로 설정
+AWS_STORAGE_BUCKET_NAME = 'mydiaryimg' # S3 버킷 이름
+
+# AWS 세팅
+AWS_ACCESS_KEY_ID = get_secret("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = get_secret("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = 'ap-northeast-2'
+AWS_QUERYSTRING_AUTH = False
+#-------------------------------------------------------------------#

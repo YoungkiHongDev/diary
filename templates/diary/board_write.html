@@ -43,6 +43,19 @@
                    value="{{ form.board_emo.value|default_if_none:'None' }}">
         </div>
 
+        <!-- 이미지 파일 업로드 -->
+        <div class="form-group" id="ajaxUploadForm">
+            <input type="file" id="picture" name="picture" accept="image/*">
+            <input type="button" value="이미지 분석" onclick="ajaxFileUpload()">
+        </div>
+
+        <!-- 이미지 분석 결과 -->
+        <div class="form-group">
+            <label>이미지 분석 결과</label>
+            <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly"
+                   value="{{ form.board_img.value|default_if_none:'None' }}">
+        </div>
+
         <!-- 이건 뭘로 채움? -->
         <div class="form-group">
             <label>태그</label>
@@ -93,6 +106,32 @@
             }
         });
     })
+
+    //이미지 파일 업로드 ajax
+    function ajaxFileUpload() {
+        var picture = $('#picture')[0].files[0]; //이미지 파일
+        var form = new FormData(); //formData 객체
+        form.append("picture", picture); //formData 객체에 파일 담기
+        $.ajax({
+            url: "{% url 'diary:img_emotion' %}", //views.py의 img_emotion
+            type: "POST",
+            headers: {
+                'X-CSRFTOKEN' : '{{ csrf_token }}' //CSRF 보안 에러 방지
+            },
+            data: form, //보낼 데이터
+            processData: false, //쿼리스트링 형태가 아닌 키와 벨류 형태로 전달
+            contentType: false, //urlencoded는 파일 전송을 하지 못하므로 false
+            success: function(result) { //성공 시
+                result_emotion = JSON.stringify(result["rekognition"]); //json 형태의 감정 분석값의 value 추출 및 string으로 변환
+                result_emotion = result_emotion.replace(/\"/gi, ""); //큰 따옴표 제거
+                $('#board_img').val(result_emotion) //이미지 분석 값을 이미지 분석 결과 칸에 보여주기
+                alert('Success!')
+            },
+            error: function(){ //실패 시
+                alert('Error!');
+            }
+        });
+    }
 </script>
 
 {% endblock %}

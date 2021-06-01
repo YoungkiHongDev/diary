@@ -10,4 +10,5 @@ urlpatterns = [
     path('answer/create/<int:board_id>/', views.answer_board, name='answer_board'), # 댓글 작성
     path('post/write/', views.post_write, name='post_write'),   # 글 쓰기
     path('analyze/', views.analyze_emotion, name='analyze_emotion'),
+    path('img/', views.img_emotion, name='img_emotion'),
 ]

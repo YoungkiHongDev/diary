@@ -3,3 +3,4 @@ diary/__pycache__
 config/__pycache__
 common/__pycache__
 common/migrations/__pycache__
+secrets.json
