@@ -45,8 +45,9 @@
 
         <!-- 이미지 파일 업로드 -->
         <div class="form-group" id="ajaxUploadForm">
-            <input type="file" id="picture" name="picture" accept="image/*">
+            <input type="file" id="picture" name="picture" onchange="imgPreview(this);" accept="image/*">
             <input type="button" value="이미지 분석" onclick="ajaxFileUpload()">
+            <img id="mypic" src="#" width="300" style="display:none">
         </div>
 
         <!-- 이미지 분석 결과 -->
@@ -107,7 +108,7 @@
         });
     })
 
-    //이미지 파일 업로드 ajax
+    {% comment %} 이미지 파일 업로드 ajax {% endcomment %}
     function ajaxFileUpload() {
         var picture = $('#picture')[0].files[0]; //이미지 파일
         var form = new FormData(); //formData 객체
@@ -131,6 +132,20 @@
                 alert('Error!');
             }
         });
+    }
+
+    {% comment %} image preview 자바스크립트 {% endcomment %}
+    function imgPreview(input) {
+            if (input.files && input.files[0]) { //파일을 올리면
+                var reader = new FileReader(); //파일을 읽는 객체
+
+                reader.onload = function (e) {
+                    $('#mypic').attr('src', e.target.result); //이미지 경로 설정
+                    $('#mypic').attr('style', "display:block"); //이미지 보이기
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
     }
 </script>
 
