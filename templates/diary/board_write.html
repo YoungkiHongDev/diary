@@ -43,22 +43,22 @@
             <input type="text" class="form-control" id="board_emo" name="board_emo" readonly="readonly" 
                      value="{{ form.board_emo.value|default_if_none:'None' }}"><br>
 
-                <label>Positive</label><br>
+                <label id="positive_label">Positive</label><br>
                 <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" id="emo_Positive"
                          aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br>
-                <label>Neutral</label><br>
+                <label id="neutral_label">Neutral</label><br>
                 <div class="progress">
                     <div class="progress-bar bg-info" role="progressbar" id="emo_Neutral"
                         aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br>
-                <label>Mixed</label><br>
+                <label id="mixed_label">Mixed</label><br>
                 <div class="progress">
                     <div class="progress-bar bg-warning" role="progressbar"  id="emo_Mixed"
                         aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br>
-                <label>Negative</label><br>
+                <label id="negative_label">Negative</label><br>
                 <div class="progress">
                     <div class="progress-bar bg-danger" role="progressbar"  id="emo_Negative"
                         aria-valuemin="0" aria-valuemax="100"></div>
@@ -179,6 +179,12 @@
                 document.getElementById('emo_Neutral').style.width = result_data4["Neutral"].toFixed(3) * 100 +'%';
                 document.getElementById('emo_Mixed').style.width = result_data4["Mixed"].toFixed(3) * 100 +'%';
                 document.getElementById('emo_Negative').style.width = result_data4["Negative"].toFixed(3) * 100 +'%';
+
+                // 각 Label에 %표시
+                document.getElementById('positive_label').innerHTML = 'Positive' + ' ' + (result_data4["Positive"]*100).toFixed(1) + '%'
+                document.getElementById('neutral_label').innerHTML = 'Neutral' + ' ' + (result_data4["Neutral"]*100).toFixed(1) + '%'
+                document.getElementById('mixed_label').innerHTML = 'Mixed' + ' ' + (result_data4["Mixed"]*100).toFixed(1) + '%'
+                document.getElementById('negative_label').innerHTML = 'Negative' + ' ' + (result_data4["Negative"]*100).toFixed(1) + '%'
             },
 
             // 오류가 발생했을 경우
