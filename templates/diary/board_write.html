@@ -38,10 +38,10 @@
 
         <!-- 감정 분석 결과창, 읽기 전용, 사용자가 수정 불가능 -->
         <div class="form-group">
-            <label>감정 분석 결과</label><br>
+            <br><label>감정 분석 결과</label>
             
             <input type="text" class="form-control" id="board_emo" name="board_emo" readonly="readonly" 
-                     value="{{ form.board_emo.value|default_if_none:'None' }}">
+                     value="{{ form.board_emo.value|default_if_none:'None' }}"><br>
 
                 <label>Positive</label><br>
                 <div class="progress">
@@ -70,41 +70,62 @@
             <input type="file" id="picture" name="picture" onchange="imgPreview(this);" accept="image/*">
             <input type="button" value="이미지 분석" onclick="ajaxFileUpload()">
             <img id="mypic" src="#" width="300" style="display:none">
-        </div>
+        </div><br>
 
         <!-- 이미지 분석 결과 -->
         <div class="form-group">
-            <label>이미지 분석 결과</label>
+            <label>이미지 분석 결과</label><br>
             <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly"
-                   value="{{ form.board_img.value|default_if_none:'None' }}">
-        
-        <label>HAPPY</label>
-        <input type="text" id="board_img_happy">
+                   value="{{ form.board_img.value|default_if_none:'None' }}"><br>
+            
+            <label id="label_happy">Happy</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-happy" role="progressbar" id="board_img_happy"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>SAD</label>
-        <input type="text" id="board_img_sad">
+            <label id="label_sad">Sad</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-sad" role="progressbar" id="board_img_sad"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>ANGRY</label>
-        <input type="text" id="board_img_angry">
+            <label id="label_angry">Angry</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-angry" role="progressbar" id="board_img_angry"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>CONFUSED</label>
-        <input type="text" id="board_img_confused">
+            <label id="label_confused">Confused</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-confused" role="progressbar" id="board_img_confused"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>DISGUSTED</label>
-        <input type="text" id="board_img_disgusted">
+            <label id="label_disgusted">Disgusted</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-disgusted" role="progressbar" id="board_img_disgusted"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>SURPRISED</label>
-        <input type="text" id="board_img_surprised">
+            <label id="label_surprised">Surprised</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-surprised" role="progressbar" id="board_img_surprised"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>CALM</label>
-        <input type="text" id="board_img_calm">
+            <label id="label_calm">Calm</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-calm" role="progressbar" id="board_img_calm"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
 
-        <label>FEAR</label>
-        <input type="text" id="board_img_fear">
-
-        {% comment %} <label>UNKNOWN</label>
-        <input type="text" id="board_img_unknown">
-        </div> {% endcomment %}
+            <label id="label_fear">Fear</label><br>
+            <div class="progress">
+                    <div class="progress-bar bg-fear" role="progressbar" id="board_img_fear"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+            </div><br>
+        </div>
 
         <!-- 이건 뭘로 채움? -->
         <div class="form-group">
@@ -183,8 +204,8 @@
             contentType: false, //urlencoded는 파일 전송을 하지 못하므로 false
 
             success: function(result) { //성공 시
-                result_emotion_all = result["rekognition"]
-                result_emotion_happy = result_emotion_all["HAPPY"]
+                result_emotion_all = result["rekognition"];
+                result_emotion_happy = result_emotion_all["HAPPY"];
                 result_emotion_sad = result_emotion_all["SAD"]
                 result_emotion_angry = result_emotion_all["ANGRY"]
                 result_emotion_confused = result_emotion_all["CONFUSED"]
@@ -192,20 +213,30 @@
                 result_emotion_surprised = result_emotion_all["SURPRISED"]
                 result_emotion_calm = result_emotion_all["CALM"]
                 result_emotion_fear = result_emotion_all["FEAR"]
-                // result_emotion_unknown = result_emotion_all["UNKNOWN"]
-                // result_emotion = JSON.stringify(result["rekognition"]); //json 형태의 감정 분석값의 value 추출 및 string으로 변환
-                // result_emotion = result_emotion.replace(/\"/gi, ""); //큰 따옴표 제거
 
-                $('#board_img').val(result_emotion_all) //이미지 분석 값을 이미지 분석 결과 칸에 보여주기
-                document.getElementById("board_img_happy").value = result_emotion_happy
-                document.getElementById("board_img_sad").value = result_emotion_sad
-                document.getElementById("board_img_angry").value = result_emotion_angry
-                document.getElementById("board_img_confused").value = result_emotion_confused
-                document.getElementById("board_img_disgusted").value = result_emotion_disgusted
-                document.getElementById("board_img_surprised").value = result_emotion_surprised
-                document.getElementById("board_img_calm").value = result_emotion_calm
-                document.getElementById("board_img_fear").value = result_emotion_fear
-                // document.getElementById("board_img_unknown").value = result_emotion_unknown
+                //board_img 결과
+                $('#board_img').val(JSON.stringify(result_emotion_all))
+
+                //이미지 분석 결과 라벨
+                document.getElementById("label_happy").innerHTML = 'Happy' + ' ' + result_emotion_happy.toFixed(1) + '%'
+                document.getElementById("label_sad").innerHTML = 'Sad' + ' ' + result_emotion_sad.toFixed(1) + '%'
+                document.getElementById("label_angry").innerHTML = 'Angry' + ' ' + result_emotion_angry.toFixed(1) + '%'
+                document.getElementById("label_confused").innerHTML = 'Confused' + ' ' + result_emotion_confused.toFixed(1) + '%'
+                document.getElementById("label_disgusted").innerHTML = 'Disgusted' + ' ' + result_emotion_disgusted.toFixed(1) + '%'
+                document.getElementById("label_surprised").innerHTML = 'Surprised' + ' ' + result_emotion_surprised.toFixed(1) + '%'
+                document.getElementById("label_calm").innerHTML = 'Calm' + ' ' + result_emotion_calm.toFixed(1) + '%'
+                document.getElementById("label_fear").innerHTML = 'Fear' + ' ' + result_emotion_fear.toFixed(1) + '%'
+
+                //이미지 분석 결과 프로그레스바
+                document.getElementById("board_img_happy").style.width = result_emotion_happy.toFixed(3) + '%';
+                document.getElementById("board_img_sad").style.width = result_emotion_sad.toFixed(3) + '%';
+                document.getElementById("board_img_angry").style.width = result_emotion_angry.toFixed(3) + '%';
+                document.getElementById("board_img_confused").style.width = result_emotion_confused.toFixed(3) + '%';
+                document.getElementById("board_img_disgusted").style.width = result_emotion_disgusted.toFixed(3) + '%';
+                document.getElementById("board_img_surprised").style.width = result_emotion_surprised.toFixed(3) + '%';
+                document.getElementById("board_img_calm").style.width = result_emotion_calm.toFixed(3) + '%';
+                document.getElementById("board_img_fear").style.width = result_emotion_fear.toFixed(3) + '%';
+
                 alert('Success!')
             },
             error: function(){ //실패 시
