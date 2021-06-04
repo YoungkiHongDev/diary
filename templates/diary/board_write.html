@@ -34,13 +34,35 @@
         </div>
 
         <!-- 내용에 채워진 일기로 감정 분석을 위해서 누르는 버튼 -->
-        <input type="button" value="감정 분석" class="btnAjax">
+        <input type="button" value="일기 감정 분석" class="btnAjax">
 
         <!-- 감정 분석 결과창, 읽기 전용, 사용자가 수정 불가능 -->
         <div class="form-group">
-            <label>감정 분석 결과</label>
-            <input type="text" class="form-control" name="board_emo" id="board_emo" readonly="readonly"
-                   value="{{ form.board_emo.value|default_if_none:'None' }}">
+            <label>감정 분석 결과</label><br>
+            
+            <input type="text" class="form-control" id="board_emo" name="board_emo" readonly="readonly" 
+                     value="{{ form.board_emo.value|default_if_none:'None' }}">
+
+                <label>Positive</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" id="emo_Positive"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Neutral</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" id="emo_Neutral"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Mixed</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar"  id="emo_Mixed"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Negative</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar"  id="emo_Negative"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
         </div>
 
         <!-- 이미지 파일 업로드 -->
@@ -96,9 +118,19 @@
                 result_data4 = JSON.parse(result_data3);
                 //복잡하지만 위의 과정을 거쳐야 추출할 수 있었다. 추후에 수정 예정
 
+                // emotions = [(result_data4["Positive"]*100).toFixed(1), (result_data4["Neutral"]*100).toFixed(1), 
+                //             (result_data4["Mixed"]*100).toFixed(1), (result_data4["Negative"]*100).toFixed(1)]
+
                 //각 감정값을 추출하는 코드
-                $('#board_emo').val(result_data4["Mixed"].toFixed(5) + " / " + result_data4["Negative"].toFixed(5)
-                             + " / " + result_data4["Neutral"].toFixed(5) + " / " + result_data4["Positive"].toFixed(5));
+                $('#board_emo').val((result_data4["Positive"]*100).toFixed(1) + "/" + (result_data4["Neutral"]*100).toFixed(1)
+                             + "/" + (result_data4["Mixed"]*100).toFixed(1) + "/" + (result_data4["Negative"]*100).toFixed(1));
+                // $('#board_emo').val(emotions)
+
+                // 감정 분석 후 값을 프로그레스바에 적용하는 코드
+                document.getElementById('emo_Positive').style.width = result_data4["Positive"].toFixed(3) * 100 +'%';
+                document.getElementById('emo_Neutral').style.width = result_data4["Neutral"].toFixed(3) * 100 +'%';
+                document.getElementById('emo_Mixed').style.width = result_data4["Mixed"].toFixed(3) * 100 +'%';
+                document.getElementById('emo_Negative').style.width = result_data4["Negative"].toFixed(3) * 100 +'%';
             },
 
             // 오류가 발생했을 경우
@@ -108,7 +140,7 @@
         });
     })
 
-    {% comment %} 이미지 파일 업로드 ajax {% endcomment %}
+    // {% comment %} 이미지 파일 업로드 ajax {% endcomment %}
     function ajaxFileUpload() {
         var picture = $('#picture')[0].files[0]; //이미지 파일
         var form = new FormData(); //formData 객체
@@ -134,7 +166,7 @@
         });
     }
 
-    {% comment %} image preview 자바스크립트 {% endcomment %}
+    // {% comment %} image preview 자바스크립트 {% endcomment %}
     function imgPreview(input) {
             if (input.files && input.files[0]) { //파일을 올리면
                 var reader = new FileReader(); //파일을 읽는 객체

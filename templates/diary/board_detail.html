@@ -5,7 +5,28 @@
     <h2 class="border-bottom py-2">{{ board.board_subject }}</h2>
     <div class="card my-3">
         <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}</div>
+            <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}{{ board.board_emo }}</div>
+
+                <label>Positive</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" id="emo_Positive"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Neutral</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" id="emo_Neutral"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Mixed</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar"  id="emo_Mixed"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Negative</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar"  id="emo_Negative"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2">
                     {{ board.mem_name }}
