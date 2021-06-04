@@ -77,7 +77,34 @@
             <label>이미지 분석 결과</label>
             <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly"
                    value="{{ form.board_img.value|default_if_none:'None' }}">
-        </div>
+        
+        <label>HAPPY</label>
+        <input type="text" id="board_img_happy">
+
+        <label>SAD</label>
+        <input type="text" id="board_img_sad">
+
+        <label>ANGRY</label>
+        <input type="text" id="board_img_angry">
+
+        <label>CONFUSED</label>
+        <input type="text" id="board_img_confused">
+
+        <label>DISGUSTED</label>
+        <input type="text" id="board_img_disgusted">
+
+        <label>SURPRISED</label>
+        <input type="text" id="board_img_surprised">
+
+        <label>CALM</label>
+        <input type="text" id="board_img_calm">
+
+        <label>FEAR</label>
+        <input type="text" id="board_img_fear">
+
+        {% comment %} <label>UNKNOWN</label>
+        <input type="text" id="board_img_unknown">
+        </div> {% endcomment %}
 
         <!-- 이건 뭘로 채움? -->
         <div class="form-group">
@@ -154,10 +181,31 @@
             data: form, //보낼 데이터
             processData: false, //쿼리스트링 형태가 아닌 키와 벨류 형태로 전달
             contentType: false, //urlencoded는 파일 전송을 하지 못하므로 false
+
             success: function(result) { //성공 시
-                result_emotion = JSON.stringify(result["rekognition"]); //json 형태의 감정 분석값의 value 추출 및 string으로 변환
-                result_emotion = result_emotion.replace(/\"/gi, ""); //큰 따옴표 제거
-                $('#board_img').val(result_emotion) //이미지 분석 값을 이미지 분석 결과 칸에 보여주기
+                result_emotion_all = result["rekognition"]
+                result_emotion_happy = result_emotion_all["HAPPY"]
+                result_emotion_sad = result_emotion_all["SAD"]
+                result_emotion_angry = result_emotion_all["ANGRY"]
+                result_emotion_confused = result_emotion_all["CONFUSED"]
+                result_emotion_disgusted = result_emotion_all["DISGUSTED"]
+                result_emotion_surprised = result_emotion_all["SURPRISED"]
+                result_emotion_calm = result_emotion_all["CALM"]
+                result_emotion_fear = result_emotion_all["FEAR"]
+                // result_emotion_unknown = result_emotion_all["UNKNOWN"]
+                // result_emotion = JSON.stringify(result["rekognition"]); //json 형태의 감정 분석값의 value 추출 및 string으로 변환
+                // result_emotion = result_emotion.replace(/\"/gi, ""); //큰 따옴표 제거
+
+                $('#board_img').val(result_emotion_all) //이미지 분석 값을 이미지 분석 결과 칸에 보여주기
+                document.getElementById("board_img_happy").value = result_emotion_happy
+                document.getElementById("board_img_sad").value = result_emotion_sad
+                document.getElementById("board_img_angry").value = result_emotion_angry
+                document.getElementById("board_img_confused").value = result_emotion_confused
+                document.getElementById("board_img_disgusted").value = result_emotion_disgusted
+                document.getElementById("board_img_surprised").value = result_emotion_surprised
+                document.getElementById("board_img_calm").value = result_emotion_calm
+                document.getElementById("board_img_fear").value = result_emotion_fear
+                // document.getElementById("board_img_unknown").value = result_emotion_unknown
                 alert('Success!')
             },
             error: function(){ //실패 시

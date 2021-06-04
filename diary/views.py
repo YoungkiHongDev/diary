@@ -101,14 +101,19 @@ def img_emotion(request):
         # 감정 값만 저장하는 반복문
         for faceDetail in response['FaceDetails']:
             emotions = faceDetail['Emotions']
-        
+
         df = pd.DataFrame(emotions) # 감정 값 데이터 가공
-        type = str(df.Type[0]) # 가장 커서 맨 위에 있는 감정
+
+        result = {} # 감정값을 저장할 사전
+        for i in df.itertuples(): # 감정값을 사전에 저장할 반복문
+            result[i.Type] = i.Confidence # 타입을 키로, 컨피던스를 벨류로
+
+        # type = str(df.Type[0]) # 가장 커서 맨 위에 있는 감정
         # confidence = str(df.Confidence[0]) # 가장 커서 맨 위에 있는 감정 비율
         # result = type + ' ' + confidence # 감정과 비율 모두 출력 시 사용
         
         context = {
-            'rekognition': type
+            'rekognition': result
         }
 
         return JsonResponse(context) # Json 형태로 응답
