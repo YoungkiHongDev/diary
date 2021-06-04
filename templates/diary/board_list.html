@@ -6,27 +6,31 @@
 <div class="container my-3">
     <table class="table">
         <thead>
-            <tr class="thead-dark">
+            <tr class="text-center thead-dark">
                 <th>번호</th>
-                <th>제목</th>
+                <th style="width:50%">제목</th>
+                <th>글쓴이</th>
                 <th>작성일시</th>
             </tr>
         </thead>
         <tbody>
             {% if board_list %}
                 {% for board in board_list %}
-                    <tr>
-                        <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
-                        <td>{{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}</td>
+                    <tr class="text-center">
                         <td>
-                        <!-- 제목 -->
-                        <a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a>
-                        <!-- 댓글 갯수 -->
-                        {% if board.answer_set.count > 0 %}
-                        <span class="text-danger small ml-2">{{ board.answer_set.count }}</span>
-                        {% endif %}
+                            <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
+                            {{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}
                         </td>
-                        <td>{{ board.board_date }}</td>
+                        <td class="text-left">
+                            <!-- 제목 -->
+                            <a href="{% url 'diary:detail' board.id %}">{{ board.board_subject }}</a>
+                            <!-- 댓글 갯수 -->
+                            {% if board.answer_set.count > 0 %}
+                            <span class="text-danger small ml-2">{{ board.answer_set.count }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ board.mem_name }}</td>  <!-- 글쓴이 추가 -->
+                        <td>{{ board.board_date }}</td> <!-- 작성 날짜 추가 -->
                     </tr>
                 {% endfor %}    
             {% else %}

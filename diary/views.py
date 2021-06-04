@@ -1,15 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 # from django.http import HttpResponse  # 헬로 월드 없애서 이제 필요 없음!
 from .models import Write
-from django.utils import timezone
+from django.utils import timezone   # 시간표시 모듈
 from .forms import WriteForm
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator # 페이지 기능 모듈
 from django.http import JsonResponse
 import boto3 # AWS 모듈
 import json
 import pandas as pd # pandas 모듈
 from .models import S3upload # S3 업로드 모델
 from django.conf import settings # AWS 세팅값을 사용하기 위해 settings 불러오기
+from django.contrib.auth.models import User # 인증모듈
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -41,9 +42,9 @@ def answer_board(request, board_id):
     """
     diary 댓글 등록
     """
-    board = get_object_or_404(Write, pk=board_id)
-    board.answer_set.create(answer_content=request.POST.get('content'), answer_date=timezone.now())   
-    return redirect('diary:detail', board_id=board.id)
+    board = get_object_or_404(Write, pk=board_id)   # 페이지 없으면 404 띄우기
+    board.answer_set.create(answer_content=request.POST.get('content'), answer_date=timezone.now(), mem_name=request.user.username) # 내용, 시간, 이름
+    return redirect('diary:detail', board_id=board.id)  # 리다이렉트 지정
 
 def post_write(request):
     """
@@ -52,9 +53,9 @@ def post_write(request):
     if request.method == 'POST':
         form = WriteForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.board_date = timezone.now()
-            post.mem_name = "asd"
+            post = form.save(commit=False)  # post에 담기
+            post.board_date = timezone.now()    # 작성 시간
+            post.mem_name = request.user.username   # 이름
             post.save()
             return redirect('diary:index')
     else:
