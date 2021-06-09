@@ -40,7 +40,7 @@
         <div class="form-group">
             <br><label>감정 분석 결과</label>
             
-            <input type="text" class="form-control" id="board_emo" name="board_emo" readonly="readonly" 
+            <input type="text" class="form-control" id="board_emo" name="board_emo" readonly="readonly"  style="display: none;"
                      value="{{ form.board_emo.value|default_if_none:'None' }}"><br>
 
                 <label id="positive_label">Positive</label><br>
@@ -75,7 +75,7 @@
         <!-- 이미지 분석 결과 -->
         <div class="form-group">
             <label>이미지 분석 결과</label><br>
-            <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly"
+            <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly" style="display: none;"
                    value="{{ form.board_img.value|default_if_none:'None' }}"><br>
             
             <label id="label_happy">Happy</label><br>
@@ -219,9 +219,6 @@
                 result_emotion_surprised = result_emotion_all["SURPRISED"]
                 result_emotion_calm = result_emotion_all["CALM"]
                 result_emotion_fear = result_emotion_all["FEAR"]
-
-                //board_img 결과
-                $('#board_img').val(JSON.stringify(result_emotion_all))
 
                 //이미지 분석 결과 라벨
                 document.getElementById("label_happy").innerHTML = 'Happy' + ' ' + result_emotion_happy.toFixed(1) + '%'
