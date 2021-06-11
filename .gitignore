@@ -1,5 +1,6 @@
 venv/
 diary/__pycache__
+diary/migrations
 config/__pycache__
 common/__pycache__
 common/migrations/__pycache__
