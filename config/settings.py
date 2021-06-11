@@ -101,6 +101,15 @@ DATABASES = {
         'NAME': 'diary',
     }
 }
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'DIARY',
+#             'HOST': 'mongodb+srv://DiaryAdmin:diary159357456@cluster0.znsdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+#             'USER': 'DiaryAdmin',
+#             'PASSWORD': 'diary159357456',
+#         }
+# }
 
 
 # Password validation
