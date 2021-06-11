@@ -27,6 +27,46 @@
                     <div class="progress-bar bg-danger" role="progressbar"  id="emo_Negative"
                         aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br>
+                <label>Happy</label><br>
+                <div class="progress">
+                    <div class="progress-bar bg-happy" role="progressbar" id="board_img_happy"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Sad</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-sad" role="progressbar" id="board_img_sad"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Angry</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-angry" role="progressbar" id="board_img_angry"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Confused</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-confused" role="progressbar" id="board_img_confused"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Disgusted</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-disgusted" role="progressbar" id="board_img_disgusted"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Surprised</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-surprised" role="progressbar" id="board_img_surprised"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Calm</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-calm" role="progressbar" id="board_img_calm"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
+                <label>Fear</label><br>
+                <div class="progress">
+                        <div class="progress-bar bg-fear" role="progressbar" id="board_img_fear"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br>
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2">
                     {{ board.mem_name }}
@@ -69,12 +109,22 @@
 <script>
     var temporarily_data = "{{ board.board_emo }}"      // board_emo 저장
     var emotions = temporarily_data.split('/')          // split으로 가공
-    
+    var temporarily_image = "{{ board.board_img }}"
+    var images = temporarily_image.split('/')
+
     // 각 프로그레스바 설정
     document.getElementById('emo_Positive').style.width = emotions[0] +'%';
     document.getElementById('emo_Neutral').style.width = emotions[1] +'%';
     document.getElementById('emo_Mixed').style.width = emotions[2] +'%';
     document.getElementById('emo_Negative').style.width = emotions[3] +'%';
+    document.getElementById("board_img_happy").style.width = images[0] + '%';
+    document.getElementById("board_img_sad").style.width = images[1] + '%';
+    document.getElementById("board_img_angry").style.width = images[2] + '%';
+    document.getElementById("board_img_confused").style.width = images[3] + '%';
+    document.getElementById("board_img_disgusted").style.width = images[4] + '%';
+    document.getElementById("board_img_surprised").style.width = images[5] + '%';
+    document.getElementById("board_img_calm").style.width = images[6] + '%';
+    document.getElementById("board_img_fear").style.width = images[7] + '%';
 </script>
 
 

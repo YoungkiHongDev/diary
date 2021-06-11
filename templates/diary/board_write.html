@@ -75,7 +75,7 @@
         <!-- 이미지 분석 결과 -->
         <div class="form-group">
             <label>이미지 분석 결과</label><br>
-            <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly" style="display: none;"
+            <input type="text" class="form-control" name="board_img" id="board_img" readonly="readonly"
                    value="{{ form.board_img.value|default_if_none:'None' }}"><br>
             
             <label id="label_happy">Happy</label><br>
@@ -212,13 +212,18 @@
             success: function(result) { //성공 시
                 result_emotion_all = result["rekognition"];
                 result_emotion_happy = result_emotion_all["HAPPY"];
-                result_emotion_sad = result_emotion_all["SAD"]
-                result_emotion_angry = result_emotion_all["ANGRY"]
-                result_emotion_confused = result_emotion_all["CONFUSED"]
-                result_emotion_disgusted = result_emotion_all["DISGUSTED"]
-                result_emotion_surprised = result_emotion_all["SURPRISED"]
-                result_emotion_calm = result_emotion_all["CALM"]
-                result_emotion_fear = result_emotion_all["FEAR"]
+                result_emotion_sad = result_emotion_all["SAD"];
+                result_emotion_angry = result_emotion_all["ANGRY"];
+                result_emotion_confused = result_emotion_all["CONFUSED"];
+                result_emotion_disgusted = result_emotion_all["DISGUSTED"];
+                result_emotion_surprised = result_emotion_all["SURPRISED"];
+                result_emotion_calm = result_emotion_all["CALM"];
+                result_emotion_fear = result_emotion_all["FEAR"];
+
+                //board_img 결과
+                $('#board_img').val(result_emotion_happy.toFixed(1) + "/" + result_emotion_sad.toFixed(1) + "/"
+                 + result_emotion_angry.toFixed(1) + "/" + result_emotion_confused.toFixed(1) + "/" + result_emotion_disgusted.toFixed(1) + "/"
+                 + result_emotion_surprised.toFixed(1) + "/" + result_emotion_calm.toFixed(1) + "/" + result_emotion_fear.toFixed(1));
 
                 //이미지 분석 결과 라벨
                 document.getElementById("label_happy").innerHTML = 'Happy' + ' ' + result_emotion_happy.toFixed(1) + '%'
