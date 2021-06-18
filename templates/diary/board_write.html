@@ -34,7 +34,7 @@
         </div>
 
         <!-- 내용에 채워진 일기로 감정 분석을 위해서 누르는 버튼 -->
-        <input type="button" value="일기 감정 분석" class="btnAjax">
+        <input type="button" value="일기 감정 분석" class="btnAjax btn btn-outline-secondary">
 
         <!-- 감정 분석 결과창, 읽기 전용, 사용자가 수정 불가능 -->
         <div class="form-group">
@@ -67,8 +67,10 @@
 
         <!-- 이미지 파일 업로드 -->
         <div class="form-group" id="ajaxUploadForm">
-            <input type="file" id="picture" name="picture" onchange="imgPreview(this);" accept="image/*">
-            <input type="button" value="이미지 분석" onclick="ajaxFileUpload()">
+            <input type="file" id="picture" name="picture" onchange="imgPreview(this);" accept="image/*"
+            value="{{ form.picture.value|default_if_none:'None' }}" style="display:none">
+            <div class="btn btn-outline-secondary" type="button" onclick="document.all.picture.click()">사진 추가</div>
+            <input class="btn btn-outline-secondary" type="button" value="이미지 분석" onclick="ajaxFileUpload()">
             <img id="mypic" src="#" width="300" style="display:none">
         </div><br>
 

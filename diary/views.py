@@ -56,6 +56,7 @@ def post_write(request):
             post = form.save(commit=False)  # post에 담기
             post.board_date = timezone.now()    # 작성 시간
             post.mem_name = request.user.username   # 이름
+            post.imgread = settings.imgread # 전역변수에서 이미지 파일명을 가져오기
             post.save()
             return redirect('diary:index')
     else:
@@ -79,6 +80,7 @@ def analyze_emotion(request):
         }
         return JsonResponse(context)   #json 형식으로 반환
 
+
 def img_emotion(request):
     """
     이미지 업로드 및 이미지 감정 분석 (AWS S3 & Rekognition)
@@ -92,6 +94,7 @@ def img_emotion(request):
 
         media = 'media/' # S3의 이미지 폴더 경로
         photo = media + filename # media/파일명.확장자
+        settings.imgread = photo # 전역변수에 이미지 파일명 넣기
         bucket = settings.AWS_STORAGE_BUCKET_NAME # S3 버킷 이름
         region = settings.AWS_REGION # AWS 지역
 
