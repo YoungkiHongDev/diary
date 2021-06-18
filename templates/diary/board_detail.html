@@ -5,7 +5,9 @@
     <h2 class="border-bottom py-2">{{ board.board_subject }}</h2>
     <div class="card my-3">
         <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}</div>
+            {% comment %} 이미지 보여주기 {% endcomment %}
+            <img src="https://{{ bucket }}.s3.{{ region }}.amazonaws.com/{{ board.imgread }}" width="500">
+            <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}</div><br>
 
                 <label>Positive</label><br>
                 <div class="progress">

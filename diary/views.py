@@ -35,7 +35,11 @@ def detail(request, board_id):   # board_id 객체를 가져옴
     diary 내용 출력
     """
     board = Write.objects.get(id=board_id)
-    context = {'board': board}
+    context = {
+        'board': board,
+        'bucket' : settings.AWS_STORAGE_BUCKET_NAME,
+        'region' : settings.AWS_REGION
+        }
     return render(request, 'diary/board_detail.html', context)    # diary/board_detail.html에 context 파라미터로 넘겨줘라!
 
 def answer_board(request, board_id):
@@ -61,7 +65,9 @@ def post_write(request):
             return redirect('diary:index')
     else:
         form = WriteForm()
-    context = {'form': form}
+    context = {
+        'form': form
+        }
     return render(request, 'diary/board_write.html', {'form': form})
 
 
@@ -76,7 +82,7 @@ def analyze_emotion(request):
         result = json.dumps(comprehend.detect_sentiment(Text=data.get('content'), LanguageCode="ko"), sort_keys=True)  #감정 분석 실시
 
         context = {
-            'result': result,
+            'result': result
         }
         return JsonResponse(context)   #json 형식으로 반환
 
