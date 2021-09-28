@@ -10,7 +10,7 @@ class Write(models.Model):
     board_emo = models.TextField(max_length=100) # 감정
     board_img = models.TextField(max_length=100) # 이미지 분석 결과
     board_tag = models.TextField(max_length=20) # 태그
-    imgread = models.TextField(max_length=20) # 이미지 파일명
+    imgread = models.TextField(max_length=20, null=True) # 이미지 파일명
 
     class Meta:
         abstract = False
