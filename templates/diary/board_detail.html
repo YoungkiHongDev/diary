@@ -5,10 +5,12 @@
     <h2 class="border-bottom py-2">{{ board.board_subject }}</h2>
     <div class="card my-3">
         <div class="card-body">
-            {% comment %} 이미지 보여주기 {% endcomment %}
+            {% comment %} 이미지 파일이 null이 아니면 보여주기 {% endcomment %}
+            {% if board.imgread != null %}
             <img src="https://{{ bucket }}.s3.{{ region }}.amazonaws.com/{{ board.imgread }}" width="500">
+            {% endif %}
             <div class="card-text" style="white-space: pre-line;">{{ board.board_content }}</div><br>
-
+            
                 <label>Positive</label><br>
                 <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" id="emo_Positive"

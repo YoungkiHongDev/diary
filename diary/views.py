@@ -60,7 +60,12 @@ def post_write(request):
             post = form.save(commit=False)  # post에 담기
             post.board_date = timezone.now()    # 작성 시간
             post.mem_name = request.user.username   # 이름
-            post.imgread = settings.imgread # 전역변수에서 이미지 파일명을 가져오기
+            post.chkinfo = request.POST["chkinfo"] # 사진 공개 유무
+
+            # 사진이 공개 설정이고 분석 결과가 있을 경우
+            if post.chkinfo == "pictrue" and post.board_img != "None":
+                post.imgread = settings.imgread # 전역변수에서 이미지 파일명을 가져오기, 사진이 비공개 설정이면 imgread = null
+            
             post.save()
             return redirect('diary:index')
     else:

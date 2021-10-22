@@ -136,6 +136,12 @@
                    value="{{ form.board_tag.value|default_if_none:'#None' }}">
         </div>
 
+        <!-- 사진 공개 유무 체크 -->
+        <input type="radio" name="chkinfo" value="pictrue" checked="checked"> 사진 공개
+        &nbsp;&nbsp;
+        <input type="radio" name="chkinfo" value="picfalse"> 사진 비공개
+        <br><br>
+
         <!-- 게시물 저장 버튼 -->
         <button type="submit" class="btn btn-primary">저장하기</button>
     </form>

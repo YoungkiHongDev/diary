@@ -11,6 +11,7 @@ class Write(models.Model):
     board_img = models.TextField(max_length=100) # 이미지 분석 결과
     board_tag = models.TextField(max_length=20) # 태그
     imgread = models.TextField(max_length=20, null=True) # 이미지 파일명
+    chkinfo = models.TextField(max_length=10) # 이미지 공개 유무
 
     class Meta:
         abstract = False
