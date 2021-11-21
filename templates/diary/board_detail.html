@@ -71,6 +71,11 @@
                         <div class="progress-bar bg-fear" role="progressbar" id="board_img_fear"
                             aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br>
+                <label>태그</label><br>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="board_tag" id="board_tag" readonly
+                           value="{{ board.board_tag }}">
+                </div><br>
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2">
                     {{ board.mem_name }}

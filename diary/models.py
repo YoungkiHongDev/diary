@@ -9,7 +9,7 @@ class Write(models.Model):
     mem_name = models.TextField(max_length=20) # 글쓴이
     board_emo = models.TextField(max_length=100) # 감정
     board_img = models.TextField(max_length=100) # 이미지 분석 결과
-    board_tag = models.TextField(max_length=20) # 태그
+    board_tag = models.TextField(max_length=100) # 태그
     imgread = models.TextField(max_length=20, null=True) # 이미지 파일명
     chkinfo = models.TextField(max_length=10) # 이미지 공개 유무
 

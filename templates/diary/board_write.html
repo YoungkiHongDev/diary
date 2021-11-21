@@ -129,10 +129,10 @@
             </div><br>
         </div>
 
-        <!-- 이건 뭘로 채움? -->
+        <!-- 핵심 단어 추출 후 태그로 사용 -->
         <div class="form-group">
             <label>태그</label>
-            <input type="text" class="form-control" name="board_tag" id="board_tag"
+            <input type="text" class="form-control" name="board_tag" id="board_tag" readonly
                    value="{{ form.board_tag.value|default_if_none:'#None' }}">
         </div>
 
@@ -169,7 +169,7 @@
             // 오류없이 진행됐을 경우
             success:function(data){
                 result_data = data;
-                result_data2 = JSON.parse(result_data["result"]);
+                result_data2 = JSON.parse(result_data["result_sentiment"]);
                 result_data3 = JSON.stringify(result_data2["SentimentScore"]);
                 result_data4 = JSON.parse(result_data3);
                 //복잡하지만 위의 과정을 거쳐야 추출할 수 있었다. 추후에 수정 예정
@@ -193,6 +193,17 @@
                 document.getElementById('neutral_label').innerHTML = 'Neutral' + ' ' + (result_data4["Neutral"]*100).toFixed(1) + '%'
                 document.getElementById('mixed_label').innerHTML = 'Mixed' + ' ' + (result_data4["Mixed"]*100).toFixed(1) + '%'
                 document.getElementById('negative_label').innerHTML = 'Negative' + ' ' + (result_data4["Negative"]*100).toFixed(1) + '%'
+
+                // 전달받은 객체에서 keyword 부분만 추출(type : 배열)
+                result_keyword = result_data["result_keyword"]
+
+                // 태그를 추출하여 설정
+                var tag = ""
+                for (var i = 0 ; i < result_keyword.length ; i++){
+                    tag = tag + "#" + result_keyword[i]["Text"] + "  "
+                }
+                $('#board_tag').val(tag)
+
             },
 
             // 오류가 발생했을 경우

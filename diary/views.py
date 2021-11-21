@@ -1,3 +1,5 @@
+#-*- coding:utf-8-*-
+
 from django.shortcuts import render, get_object_or_404, redirect
 # from django.http import HttpResponse  # 헬로 월드 없애서 이제 필요 없음!
 from .models import Write
@@ -78,16 +80,28 @@ def post_write(request):
 
 def analyze_emotion(request):
     """
-    감정 분석
+    감정 분석 및 핵심 단어(태그) 추출
     """
     if request.method == 'POST':
         data = json.loads(request.body)   #board_write.html 에서 넘어온 일기 내용 저장
         comprehend = boto3.client(service_name='comprehend', region_name='ap-northeast-2')   #컴프리핸드 선언
 
-        result = json.dumps(comprehend.detect_sentiment(Text=data.get('content'), LanguageCode="ko"), sort_keys=True)  #감정 분석 실시
+        result_sentiment = json.dumps(comprehend.detect_sentiment(Text=data.get('content'), LanguageCode="ko"), sort_keys=True)  #감정 분석 실시
 
+        result_keyword = json.dumps(comprehend.detect_key_phrases(Text=data.get('content'), LanguageCode="ko"), sort_keys=True, indent=4)
+        sub = json.loads(result_keyword)
+        KeyPhrases = sub["KeyPhrases"]
+        # keyPhrases[0]["Score"] 와 같은 방법으로 참조
+        keyword = []
+        
+        for i in KeyPhrases :
+            if i["Score"] >= 0.75 :
+                keyword.append(i)
+
+        # print(type(KeyPhrases))
         context = {
-            'result': result
+            'result_sentiment': result_sentiment,
+            'result_keyword' : keyword
         }
         return JsonResponse(context)   #json 형식으로 반환
 
