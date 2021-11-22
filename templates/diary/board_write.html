@@ -263,8 +263,20 @@
                 document.getElementById("board_img_surprised").style.width = result_emotion_surprised.toFixed(3) + '%';
                 document.getElementById("board_img_calm").style.width = result_emotion_calm.toFixed(3) + '%';
                 document.getElementById("board_img_fear").style.width = result_emotion_fear.toFixed(3) + '%';
+                
+                result_imgword = result["result_imgword"];
 
-                alert('Success!')
+                // 태그를 추출하여 설정
+                var tag = "";
+                for (var i = 0 ; i < result_imgword.length ; i++){
+                    tag = tag + "#" + result_imgword[i] + "  "
+                }
+                
+                //태그 뒤에 추가하기
+                var input = $('#board_tag');
+                input.val(input.val() + tag);
+
+                //alert('Success!')
             },
             error: function(){ //실패 시
                 alert('Error!');

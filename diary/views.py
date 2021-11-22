@@ -10,9 +10,9 @@ from django.http import JsonResponse
 import boto3 # AWS 모듈
 import json
 import pandas as pd # pandas 모듈
-from .models import S3upload # S3 업로드 모델
 from django.conf import settings # AWS 세팅값을 사용하기 위해 settings 불러오기
 from django.contrib.auth.models import User # 인증모듈
+from datetime import datetime
 
 # def index(request):
 #     return HttpResponse("안녕하세요 diary에 오신것을 환영합니다.")
@@ -87,7 +87,7 @@ def analyze_emotion(request):
         comprehend = boto3.client(service_name='comprehend', region_name='ap-northeast-2')   #컴프리핸드 선언
 
         result_sentiment = json.dumps(comprehend.detect_sentiment(Text=data.get('content'), LanguageCode="ko"), sort_keys=True)  #감정 분석 실시
-
+        
         result_keyword = json.dumps(comprehend.detect_key_phrases(Text=data.get('content'), LanguageCode="ko"), sort_keys=True, indent=4)
         sub = json.loads(result_keyword)
         KeyPhrases = sub["KeyPhrases"]
@@ -112,19 +112,19 @@ def img_emotion(request):
     """
     # POST 요청 시
     if request.method == 'POST':
-        s3 = S3upload() # S3 이미지 업로드 모델
-        s3.picture = request.FILES.get('picture') # 파일 저장
-        filename = request.FILES['picture'].name # 파일명 변수 저장
-        s3.save() # 업로드
-
-        media = 'media/' # S3의 이미지 폴더 경로
-        photo = media + filename # media/파일명.확장자
-        settings.imgread = photo # 전역변수에 이미지 파일명 넣기
         bucket = settings.AWS_STORAGE_BUCKET_NAME # S3 버킷 이름
         region = settings.AWS_REGION # AWS 지역
+        
+        s3_client=boto3.client('s3', region) # S3 클라이언트
+        img_file = request.FILES.get('picture') # 파일 저장
+        file_name = str(datetime.now()) # 현재 시간 저장
+        # filename = request.FILES['picture'].name # 파일명 변수 저장
+        
+        s3_client.upload_fileobj(img_file, bucket, file_name, ExtraArgs={"ContentType": img_file.content_type,}) # S3 업로드
+        settings.imgread = file_name # write 모델에 넣기 위해 전역변수에 이미지 파일명 넣기
 
         client=boto3.client('rekognition', region) # AWS 모듈, 사용할 서비스
-        response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':photo}},Attributes=['ALL']) # 이미지 분석 응답
+        response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':settings.imgread}},Attributes=['ALL']) # 이미지 분석 응답
 
         # 감정 값만 저장하는 반복문
         for faceDetail in response['FaceDetails']:
@@ -139,9 +139,36 @@ def img_emotion(request):
         # type = str(df.Type[0]) # 가장 커서 맨 위에 있는 감정
         # confidence = str(df.Confidence[0]) # 가장 커서 맨 위에 있는 감정 비율
         # result = type + ' ' + confidence # 감정과 비율 모두 출력 시 사용
+
+        # 감정 벨류가 75 이상이면 imgword에 감정 저장
+        imgword = []
+        for key, value in result.items():
+            if value >= 75:
+                imgword.append(key)
+        
+        # imgword에 저장된 감정 한글로 바꿔서 imgword_translate에 저장
+        imgword_translate = []
+        for word in imgword:
+            if word == "HAPPY":
+                imgword_translate.append("행복한")
+            elif word == "SAD":
+                imgword_translate.append("슬픈")
+            elif word == "ANGRY":
+                imgword_translate.append("화난")
+            elif word == "CONFUSED":
+                imgword_translate.append("혼란스러운")
+            elif word == "DISGUSTED":
+                imgword_translate.append("역겨운")
+            elif word == "SURPRISED":
+                imgword_translate.append("놀란")
+            elif word == "CALM":
+                imgword_translate.append("차분한")
+            elif word == "FEAR":
+                imgword_translate.append("무서운")
         
         context = {
-            'rekognition': result
+            'rekognition': result,
+            'result_imgword': imgword_translate
         }
 
         return JsonResponse(context) # Json 형태로 응답

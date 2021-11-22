@@ -22,7 +22,3 @@ class Answer(models.Model):
     answer_content = models.TextField()    # 내용
     answer_date = models.DateTimeField()    # 생성날짜
     mem_name = models.TextField(max_length=20) # 글쓴이
-
-# S3 업로드 모델
-class S3upload(models.Model):
-    picture = models.FileField(upload_to='media/') # 파일 필드, 업로드 경로 media/
