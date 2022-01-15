@@ -28,7 +28,7 @@ def index(request):
     # 페이징처리
     paginator = Paginator(board_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    context = {'board_list': page_obj}  # 위에 선언한 board_list를 board_list에다가 집어 넣음(context라는 배열에!) JSON 형식임
+    context = {'board_list': page_obj}  # 위에 선언한 board_list를 board_list에다가 집어 넣음(context라는 배열에!) JSON 형식임z
 
     return render(request, 'diary/board_list.html', context)  # 저장한 context 배열을 템플릿 안에 출력~ context는 파라미터!
 
@@ -117,11 +117,12 @@ def img_emotion(request):
         
         s3_client=boto3.client('s3', region) # S3 클라이언트
         img_file = request.FILES.get('picture') # 파일 저장
-        file_name = str(datetime.now()) # 현재 시간 저장
+        file_name = datetime.now() # 현재 시간 저장
+        file_name_str = file_name.strftime("%Y-%m-%d-%H-%M-%S")
         # filename = request.FILES['picture'].name # 파일명 변수 저장
         
-        s3_client.upload_fileobj(img_file, bucket, file_name, ExtraArgs={"ContentType": img_file.content_type,}) # S3 업로드
-        settings.imgread = file_name # write 모델에 넣기 위해 전역변수에 이미지 파일명 넣기
+        s3_client.upload_fileobj(img_file, bucket, file_name_str, ExtraArgs={"ContentType": img_file.content_type,}) # S3 업로드
+        settings.imgread = file_name_str # write 모델에 넣기 위해 전역변수에 이미지 파일명 넣기
 
         client=boto3.client('rekognition', region) # AWS 모듈, 사용할 서비스
         response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':settings.imgread}},Attributes=['ALL']) # 이미지 분석 응답

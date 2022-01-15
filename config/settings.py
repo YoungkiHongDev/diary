@@ -166,7 +166,7 @@ LOGOUT_REDIRECT_URL = '/'
 #-------------------------------[AWS]-------------------------------#
 # S3 세팅
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # 기본 파일 저장 경로 S3로 설정
-AWS_STORAGE_BUCKET_NAME = 'mydiaryimg' # S3 버킷 이름
+AWS_STORAGE_BUCKET_NAME = 'mydiaryimg2' # S3 버킷 이름
 
 # AWS 세팅
 AWS_ACCESS_KEY_ID = get_secret("AWS_ACCESS_KEY_ID")
